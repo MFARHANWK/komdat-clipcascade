@@ -119,3 +119,86 @@ Buka browser, kemudian ketikkan https://localhost:8080
 ## 3 Konfigurasi server
 
 Berisi
+
+## 4. Konfigurasi clipcascade client
+
+## 4.1 Konfigurasi clipcascade client untuk Windows
+
+### 4.1.1 Unduh clipcascade client untuk Windows
+
+Buka halaman GitHub berikut:
+<https://github.com/Sathvik-Rao/ClipCascade/releases>
+
+Kemudian pilih rilis terbaru lalu unduh ClipCascade.msi
+
+### 4.1.2 Install clipcascade client
+
+Setelah ClipCascade.msi berhasil diunduh, lakukan instalasi dengan langkah berikut:
+
+1. Buka file ClipCascade.msi yang berhasil diunduh, berikut tampilan yang muncul:
+
+   ![Tampilan file ClipCascaade.msi](/images/Clipcascade.msi.png)
+
+2. Klik next hingga muncul menu Select Installation Folder seperti berikut:
+
+   ![Menu Select Installation Folder](/images/SelectInstallationFolder.png)
+
+   Lokasi folder clipcascade dapat disesuaikan dengan menambahkan path yang diinginkan atau klik browse.
+
+3. Klik next, lalu install. Setelah itu proses instalasi akan dimulai.
+
+4. Setelah instalasi selesai, klik finish.
+
+   ![Finish](/images/Finish.png)
+
+### 4.1.3 Hubungkan client ke server
+
+1. Buka aplikasi clipcascade yang sudah diinstal, berikut tampilan yang akan muncul:
+
+![Konfigurasi ClipCascade](/images/KonfigurasiClipcascade.png)
+
+2. Masukan konfigurasi berikut:
+
+```
+Username: Admin
+Password: Admin123
+Server URL: http://localhost:8080
+```
+
+3. Klik Login, jika login berhasil maka akan muncul tampilan berikut:
+
+   ![Login Success](/images/LoginSuccess.png)
+
+## 4.2 Konfigurasi clipcascade client untuk Android
+
+### 4.2.1 Unduh clipcascade client untuk Android
+
+Buka halaman GitHub berikut:
+<https://github.com/Sathvik-Rao/ClipCascade/releases>
+
+Kemudian pilih rilis terbaru lalu unduh ClipCascade.apk
+
+### 4.2.2 Install clipcascade client
+
+Setelah ClipCascade.apk berhasil diunduh, lakukan instalasi dengan langkah berikut:
+
+1. Buka file ClipCascade.apk yang berhasil diunduh
+2. Ikuti langkah instalasi sampai aplikasi berhasil diunduh
+
+\*Jika aplikasi tidak dapat di instal karena berasal dari sumber yang tidak dikenal, ubah pengaturan lalu izinkan instal aplikasi dari sumber tersebut.
+
+### 4.2.3 Hubungkan client ke server
+
+1. Buka aplikasi clipcascade yang sudah diinstal, berikut tampilan yang akan muncul:
+   ![]()
+2. Masukan konfigurasi berikut:
+
+```
+Username: Admin
+Password: Admin123
+Server URL: http://localhost:8080
+```
+
+3. Klik Login, jika login berhasil maka akan muncul tampilan berikut:
+   ![]()
+4. Klik Start, maka client akan terhubung ke server.
