@@ -210,7 +210,7 @@ Server URL: http://localhost:8080
 ![Start Android](/images/Start.jpeg)
 
 ## Pembahasan
-## Analisis ClipCascade dan Perbandingannya dengan KDE Connect
+### Analisis ClipCascade dan Perbandingannya dengan KDE Connect
 
 ClipCascade merupakan aplikasi *clipboard synchronization* yang memungkinkan pengguna menyinkronkan isi clipboard secara otomatis antar perangkat, seperti Windows, macOS, Linux, dan Android. Aplikasi ini ditulis menggunakan bahasa pemrograman "Java" dan dapat dijalankan menggunakan "Docker" untuk mempermudah proses instalasi serta pengelolaan server. ClipCascade mendukung mekanisme komunikasi Peer-to-Server (P2S) dan Peer-to-Peer (P2P), serta menyediakan fitur enkripsi end-to-end untuk menjaga keamanan data. Beberapa kelebihan yang dimiliki ClipCascade antara lain:
 
