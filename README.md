@@ -208,3 +208,35 @@ Server URL: http://localhost:8080
 4. Klik Start, maka client akan terhubung ke server.
 
 ![Start Android](/images/Start.jpeg)
+
+### Pembahasan
+## Analisis ClipCascade dan Perbandingannya dengan KDE Connect
+
+ClipCascade merupakan aplikasi *clipboard synchronization* yang memungkinkan pengguna menyinkronkan isi clipboard secara otomatis antar perangkat, seperti Windows, macOS, Linux, dan Android. Aplikasi ini ditulis menggunakan bahasa pemrograman "Java" dan dapat dijalankan menggunakan "Docker" untuk mempermudah proses instalasi serta pengelolaan server. ClipCascade mendukung mekanisme komunikasi Peer-to-Server (P2S) dan Peer-to-Peer (P2P), serta menyediakan fitur enkripsi end-to-end untuk menjaga keamanan data. Beberapa kelebihan yang dimiliki ClipCascade antara lain:
+
+- Mendukung sinkronisasi clipboard secara otomatis antar perangkat tanpa perlu mengirim data secara manual.
+- Mendukung berbagai sistem operasi, termasuk Windows, macOS, Linux, dan Android.
+- Menggunakan `Docker` untuk mempermudah proses instalasi, deployment, dan pengelolaan server.
+- Memungkinkan penyimpanan data pengguna secara persisten melalui konfigurasi volume Docker.
+- Menyediakan konfigurasi ukuran maksimum pesan dan mode komunikasi melalui variabel lingkungan (environment variables).
+- Menggunakan lisensi `GPL-3.0`, sehingga kode sumbernya dapat dipelajari dan dikembangkan sesuai ketentuan lisensi tersebut.
+
+Meskipun memiliki berbagai kelebihan, ClipCascade juga memiliki beberapa kekurangan, di antaranya:
+
+- Membutuhkan koneksi jaringan agar sinkronisasi antar perangkat dapat berlangsung.
+- Instalasi dan konfigurasi server memerlukan pemahaman dasar mengenai Docker, port jaringan, dan alamat server.
+- Pada mode P2S, proses sinkronisasi bergantung pada ketersediaan server.
+- Akses dari jaringan yang berbeda memerlukan konfigurasi jaringan tambahan agar server dapat dijangkau.
+- Pengguna perlu memperhatikan keamanan akun, konfigurasi server, dan perlindungan data clipboard yang berpotensi memuat informasi sensitif.
+
+Jika dibandingkan dengan aplikasi sejenis, yaitu KDE Connect, keduanya memiliki fungsi berbagi clipboard antar perangkat, tetapi menawarkan pendekatan yang berbeda. Berikut beberapa perbandingan antara ClipCascade dan KDE Connect:
+
+- **ClipCascade** memungkinkan pengguna menjalankan server sendiri menggunakan Docker, sedangkan **KDE Connect** berfokus pada integrasi langsung antar perangkat dan umumnya digunakan melalui jaringan lokal.
+- ClipCascade dapat digunakan sebagai sarana mempelajari arsitektur client-server dan konfigurasi server, sedangkan **KDE Connect** lebih menekankan integrasi berbagai fitur antar perangkat, seperti berbagi file, notifikasi, dan clipboard.
+- ClipCascade mendukung konfigurasi mode P2S dan P2P, sedangkan KDE Connect mengandalkan komunikasi antar perangkat yang telah dipasangkan tanpa memerlukan server clipboard khusus.
+- ClipCascade memberikan keleluasaan dalam mengelola server dan konfigurasi deployment, tetapi pengguna perlu mengelola sendiri ketersediaan serta keamanan servernya. Sementara itu, KDE Connect lebih praktis untuk penggunaan sehari-hari karena tidak mengharuskan pengguna menyiapkan server tersendiri.
+- ClipCascade cocok digunakan untuk mempelajari deployment aplikasi berbasis Docker dan komunikasi data melalui server, sedangkan KDE Connect lebih cocok untuk mempelajari komunikasi antar perangkat dan integrasi layanan dalam jaringan lokal.
+
+Dalam penerapannya pada mata kuliah Komunikasi Data dan Jaringan Komputer, ClipCascade dapat digunakan sebagai media pembelajaran untuk memahami komunikasi client-server, konfigurasi port, pertukaran data, dan pengujian konektivitas jaringan. Dengan menjalankan server menggunakan Docker dan menghubungkan klien Windows serta Android, mahasiswa dapat menguji proses sinkronisasi data dan mengamati pengaruh koneksi jaringan terhadap keberhasilan komunikasi. Aplikasi ini juga dapat dibandingkan dengan KDE Connect melalui pengujian waktu sinkronisasi, keberhasilan pengiriman data, penggunaan sumber daya, serta kemudahan konfigurasi.
+
+Dengan demikian, ClipCascade tidak hanya berfungsi sebagai aplikasi berbagi clipboard, tetapi juga dapat dimanfaatkan sebagai sarana praktik untuk memahami penerapan komunikasi data, pengelolaan server, deployment berbasis container, dan keamanan pertukaran data dalam jaringan komputer.
