@@ -78,21 +78,28 @@ nano docker-compose.yml
 Kemudian isikan konfigurasinya seperti berikut ini
 
 ```
-
 services:
   clipcascade:
     image: sathvikrao/clipcascade:latest
     container_name: clipcascade
-    ports:
-      - "8080:8080"
     restart: unless-stopped
-    volumes:
-      - ./cc_users:/database
-    environment:
-      CC_MAX_MESSAGE_SIZE_IN_MiB: "1" # Maksimum ukuran pesan dalam MiB
-      CC_P2P_ENABLED: "false" # matikan mode P2P
 
+    ports:
+      - "127.0.0.1:18080:8080"
+
+    volumes:
+      - ./cc_users:/database                # Penyimpanan untuk data pengguna
+
+    environment:
+      CC_MAX_MESSAGE_SIZE_IN_MiB: "1"       # Maksimum ukuran pesan dalam MiB (Default: 1)
+      CC_P2P_ENABLED: "false"               # Mematikan mode P2P (Default : false)
+      CC_SIGNUP_ENABLED: "false"            # Mematikan fitur signup (Default : false)
+      CC_PORT: "8080"                       # Set port aplikasi (Default : 8080)
 ```
+
+Keterangan :
+
+- `"127.0.0.1:18080:8080"` akan mengatur container clipcascade hanya bisa diakses oleh localhost (127.0.0.1) dengan port 18080 oleh server dan mengarahkan koneksi tersebut ke port 8080 di dalam container.
 
 ### 2.3 Validasi konfigurasi apakah sudah benar
 
@@ -112,13 +119,127 @@ sudo docker compose up -d
 sudo docker compose logs --tail=50
 ```
 
-### 2.6 (Opsional) Memastikan container berjalan via localhost
+### 2.6 Tes akses langsung dari terminal server
 
-Buka browser, kemudian ketikkan https://localhost:8080
+```
+curl -I http://127.0.0.1:18080/
+```
+
+Akan menghasilkan keluaran seperti berikut ini
+
+![Hasil keluaran curl ke clipcascade](/images/02.png)
 
 ## 3 Konfigurasi server
 
-Berisi
+**_Catatan:_** Server mhaidar.tech menggunakan reverse proxy agar bisa menjalankan beberapa aplikasi dan dapat diakses secara publik. Terdapat aplikasi nginx yang bertugas untuk mengarahkan koneksi yang masuk kepada aplikasi yang bersesuaian.
+
+### 3.1 Membuat direktori untuk konfigurasi container nginx
+
+```
+mkdir -p nginx
+cd nginx
+```
+
+### 3.2 Konfigurasi docker-compose.yml untuk nginx
+
+Sebelum itu, kita harus membuat jaringan docker lalu memasukkan clipcascade dan nginx (akan dikonfigurasi pada docker-compose.yml) ke dalam jaringan ini. Fungsi dari jaringan docker ini adalah agar antar aplikasi bisa saling berkomunikasi.
+
+```
+docker network create homeserver
+```
+
+Kemudian tambahkan aplikasi clipcascade ke dalam jaringan `homeserver`
+
+```
+docker network connect homeserver clipcascade
+```
+
+Langkah selanjutnya adalah mengonfigurasi docker-compose.yml untuk nginx
+
+```
+nano docker-compoose.yml
+```
+
+Isikan file ``docker-compoose.yml` dengan isian berikut ini
+
+```
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    restart: unless-stopped
+    networks:
+      - homeserver
+
+networks:
+  homeserver:
+    external: true
+```
+
+Perhatikan bahwa nginx membutuhkan file `nginx.conf`` untuk di-mount ke `etc/nginx/nginx.conf``` pada container
+
+### 3.3 Membuat nginx.conf
+
+Membuat file `nginx.conf`
+
+```
+nano nginx.conf
+```
+
+Isikan file `nginx.conf` dengan isian berikut ini
+
+```
+events {}
+
+http {
+    server {
+        listen 80;
+        server_name _;
+
+        location / {
+            proxy_pass http://clipcascade:8080;
+
+            proxy_http_version 1.1;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+
+            proxy_read_timeout 3600s;
+            proxy_send_timeout 3600s;
+        }
+    }
+}
+```
+
+`proxy_pass http://clipcascade:8080;` artinya segala koneksi yang mengakses `/` akan diteruskan oleh nginx ke container clipcascade dengan port 8080
+
+### 3.5 Validasi konfigurasi dan jalankan container
+
+```
+docker compose config
+```
+
+Jika tidak ada error, jalankan container dengan mengetikkan
+
+```
+docker compose up -d
+```
+
+Kemudian periksa status keberhasilan
+
+```
+docker compose ps
+```
+
+**_Pastikan container nginx dalam status 'Up'_**
 
 ## 4. Konfigurasi clipcascade client
 
