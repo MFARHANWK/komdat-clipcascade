@@ -209,7 +209,7 @@ Server URL: http://localhost:8080
 
 ![Start Android](/images/Start.jpeg)
 
-### Pembahasan
+## Pembahasan
 ## Analisis ClipCascade dan Perbandingannya dengan KDE Connect
 
 ClipCascade merupakan aplikasi *clipboard synchronization* yang memungkinkan pengguna menyinkronkan isi clipboard secara otomatis antar perangkat, seperti Windows, macOS, Linux, dan Android. Aplikasi ini ditulis menggunakan bahasa pemrograman "Java" dan dapat dijalankan menggunakan "Docker" untuk mempermudah proses instalasi serta pengelolaan server. ClipCascade mendukung mekanisme komunikasi Peer-to-Server (P2S) dan Peer-to-Peer (P2P), serta menyediakan fitur enkripsi end-to-end untuk menjaga keamanan data. Beberapa kelebihan yang dimiliki ClipCascade antara lain:
@@ -240,3 +240,15 @@ Jika dibandingkan dengan aplikasi sejenis, yaitu KDE Connect, keduanya memiliki 
 Dalam penerapannya pada mata kuliah Komunikasi Data dan Jaringan Komputer, ClipCascade dapat digunakan sebagai media pembelajaran untuk memahami komunikasi client-server, konfigurasi port, pertukaran data, dan pengujian konektivitas jaringan. Dengan menjalankan server menggunakan Docker dan menghubungkan klien Windows serta Android, mahasiswa dapat menguji proses sinkronisasi data dan mengamati pengaruh koneksi jaringan terhadap keberhasilan komunikasi. Aplikasi ini juga dapat dibandingkan dengan KDE Connect melalui pengujian waktu sinkronisasi, keberhasilan pengiriman data, penggunaan sumber daya, serta kemudahan konfigurasi.
 
 Dengan demikian, ClipCascade tidak hanya berfungsi sebagai aplikasi berbagi clipboard, tetapi juga dapat dimanfaatkan sebagai sarana praktik untuk memahami penerapan komunikasi data, pengelolaan server, deployment berbasis container, dan keamanan pertukaran data dalam jaringan komputer.
+
+## Referensi
+
+[`^ kembali ke atas ^`](https://github.com/MFARHANWK/komdat-clipcascade)
+
+1. [ClipCascade – Clipboard Synchronization Across Devices](https://github.com/Sathvik-Rao/ClipCascade) – GitHub.
+2. [ClipCascade README.md](https://github.com/Sathvik-Rao/ClipCascade/blob/main/README.md) – Dokumentasi instalasi, konfigurasi server, Docker, dan aplikasi klien ClipCascade.
+3. [ClipCascade Releases](https://github.com/Sathvik-Rao/ClipCascade/releases) – GitHub. Informasi versi terbaru dan berkas instalasi untuk berbagai sistem operasi.
+4. [Docker Documentation](https://docs.docker.com/) – Docker. Dokumentasi resmi mengenai instalasi Docker, container, dan Docker Compose.
+5. [KDE Connect](https://kdeconnect.kde.org/) – KDE. Informasi mengenai integrasi perangkat, sinkronisasi clipboard, dan berbagi berkas.
+6. [KDE Connect – KDE Applications](https://apps.kde.org/id/kdeconnect/) – KDE. Informasi fitur dan dukungan platform KDE Connect.
+7. [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.html) – GNU. Dokumentasi lisensi perangkat lunak ClipCascade.
