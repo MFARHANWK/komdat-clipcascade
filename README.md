@@ -135,308 +135,206 @@ ClipCascade adalah open-source utility yang ringa secara otomatis menyinkronkan 
 
 [`^ kembali ke atas ^`](#)
 
-### 1. Konfigurasi Server
-
-Pengaturan server ClipCascade dapat dikonfigurasi melalui _environment variable_ pada berkas `docker-compose.yml`:
-
-- `CC_MAX_MESSAGE_SIZE_IN_MiB`: Menentukan batas maksimal ukuran pesan/konten clipboard yang dapat dikirim (contoh: `"1"` MiB).
-- `CC_P2P_ENABLED`: Mengatur mode koneksi Peer-to-Peer (`"false"` untuk menonaktifkan P2P sehingga sinkronisasi melewati server).
-
-```
-services:
-  clipcascade:
-    image: sathvikrao/clipcascade:latest
-    container_name: clipcascade
-    restart: unless-stopped
-
-    ports:
-      - "127.0.0.1:18080:8080"
-
-    volumes:
-      - ./cc_users:/database                # Penyimpanan untuk data pengguna
-
-    environment:
-      CC_MAX_MESSAGE_SIZE_IN_MiB: "1"       # Maksimum ukuran pesan dalam MiB (Default: 1)
-      CC_P2P_ENABLED: "false"               # Mematikan mode P2P (Default : false)
-      CC_SIGNUP_ENABLED: "false"            # Mematikan fitur signup (Default : false)
-      CC_PORT: "8080"                       # Set port aplikasi (Default : 8080)
-```
-
-Keterangan :
-
-- `"127.0.0.1:18080:8080"` akan mengatur container clipcascade hanya bisa diakses oleh localhost (127.0.0.1) dengan port 18080 oleh server dan mengarahkan koneksi tersebut ke port 8080 di dalam container.
-
-### 2.3 Validasi konfigurasi apakah sudah benar
-
-### 2. Konfigurasi ClipCascade Client
-
-#### 2.1 Konfigurasi ClipCascade Client untuk Windows
-
-1. **Unduh ClipCascade Client untuk Windows**  
-   Buka halaman GitHub Releases berikut:  
-   <https://github.com/Sathvik-Rao/ClipCascade/releases>  
-   Pilih rilis terbaru lalu unduh berkas `ClipCascade.msi`.
-
-2. **Install ClipCascade Client**  
-   Setelah `ClipCascade.msi` berhasil diunduh, lakukan instalasi dengan langkah berikut:
-   - Buka file `ClipCascade.msi` yang berhasil diunduh, berikut tampilan yang muncul:
-
-     ![Tampilan file ClipCascade.msi](/images/Clipcascade.msi.png)
-
-   - Klik **Next** hingga muncul menu _Select Installation Folder_ seperti berikut:
-
-     ![Menu Select Installation Folder](/images/SelectInstallationFolder.png)
-
-     _Lokasi folder ClipCascade dapat disesuaikan dengan menambahkan path yang diinginkan atau klik tombol Browse._
-
-   - Klik **Next**, lalu klik **Install**. Setelah itu proses instalasi akan dimulai.
-   - Setelah instalasi selesai, klik **Finish**:
-
-### 2.6 Tes akses langsung dari terminal server
-
-```
-curl -I http://127.0.0.1:18080/
-```
-
-Akan menghasilkan keluaran seperti berikut ini
-
-![Hasil keluaran curl ke clipcascade](/images/02.png)
-![Finish](/images/Finish.png)
-
-3. **Hubungkan Client ke Server**
-   - Buka aplikasi ClipCascade yang sudah diinstal, berikut tampilan yang akan muncul:
-
-     ![Konfigurasi ClipCascade](/images/KonfigurasiClipcascade.png)
+### 1. Konfigurasi server
 
 **_Catatan:_** Server mhaidar.tech menggunakan reverse proxy agar bisa menjalankan beberapa aplikasi dan dapat diakses secara publik. Terdapat aplikasi nginx yang bertugas untuk mengarahkan koneksi yang masuk kepada aplikasi yang bersesuaian.
 
-### 3.1 Membuat direktori untuk konfigurasi container nginx
+1. **Membuat direktori untuk konfigurasi container nginx**
 
-```
-mkdir -p nginx
-cd nginx
-```
+   ```bash
+   mkdir -p nginx
+   cd nginx
+   ```
 
-### 3.2 Konfigurasi docker-compose.yml untuk nginx
+2. **Konfigurasi docker-compose.yml untuk nginx**
 
-Sebelum itu, kita harus membuat jaringan docker lalu memasukkan clipcascade dan nginx (akan dikonfigurasi pada docker-compose.yml) ke dalam jaringan ini. Fungsi dari jaringan docker ini adalah agar antar aplikasi bisa saling berkomunikasi.
+   Sebelum itu, kita harus membuat jaringan docker lalu memasukkan clipcascade dan nginx (akan dikonfigurasi pada docker-compose.yml) ke dalam jaringan ini. Fungsi dari jaringan docker ini adalah agar antar aplikasi bisa saling berkomunikasi.
 
-```
-docker network create homeserver
-```
+   ```bash
+   docker network create homeserver
+   ```
 
-Kemudian tambahkan aplikasi clipcascade ke dalam jaringan `homeserver`
+   Kemudian tambahkan aplikasi clipcascade ke dalam jaringan `homeserver`
 
-```
-docker network connect homeserver clipcascade
-```
+   ```bash
+   docker network connect homeserver clipcascade
+   ```
 
-Langkah selanjutnya adalah mengonfigurasi docker-compose.yml untuk nginx
+   Langkah selanjutnya adalah mengonfigurasi docker-compose.yml untuk nginx
 
-```
-nano docker-compoose.yml
-```
+   ```bash
+   nano docker-compoose.yml
+   ```
 
-Isikan file ``docker-compoose.yml` dengan isian berikut ini
+   Isikan file ``docker-compoose.yml` dengan isian berikut ini
 
-```
-services:
-  nginx:
-    image: nginx:alpine
-    container_name: nginx
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    restart: unless-stopped
-    networks:
-      - homeserver
+   ```yaml 
+   services:
+     nginx:
+       image: nginx:alpine
+       container_name: nginx
+       ports:
+         - "80:80"
+       volumes:
+         - ./nginx.conf:/etc/nginx/nginx.conf:ro
+       restart: unless-stopped
+       networks:
+         - homeserver
 
-networks:
-  homeserver:
-    external: true
-```
+   networks:
+     homeserver:
+       external: true
+   ```
 
-Perhatikan bahwa nginx membutuhkan file `nginx.conf`` untuk di-mount ke `etc/nginx/nginx.conf``` pada container
+   Perhatikan bahwa nginx membutuhkan file `nginx.conf`` untuk di-mount ke `etc/nginx/nginx.conf``` pada container
 
-### 3.3 Membuat nginx.conf
+3. **Membuat nginx.conf**
 
-Membuat file `nginx.conf`
+   Membuat file `nginx.conf`
 
-```
-nano nginx.conf
-```
+   ```
+   nano nginx.conf
+   ```
 
-Isikan file `nginx.conf` dengan isian berikut ini
+   Isikan file `nginx.conf` dengan isian berikut ini
 
-```
-events {}
+   ```
+   events {}
 
-http {
-    server {
-        listen 80;
-        server_name _;
+   http {
+      server {
+         listen 80;
+         server_name _;
 
-        location / {
-            proxy_pass http://clipcascade:8080;
+         location / {
+               proxy_pass http://clipcascade:8080;
 
-            proxy_http_version 1.1;
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+               proxy_http_version 1.1;
+               proxy_set_header Host $host;
+               proxy_set_header X-Real-IP $remote_addr;
+               proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+               proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
 
-            proxy_set_header Upgrade $http_upgrade;
-            proxy_set_header Connection "upgrade";
+               proxy_set_header Upgrade $http_upgrade;
+               proxy_set_header Connection "upgrade";
 
-            proxy_read_timeout 3600s;
-            proxy_send_timeout 3600s;
-        }
-    }
-}
-```
+               proxy_read_timeout 3600s;
+               proxy_send_timeout 3600s;
+         }
+      }
+   }
+   ```
 
-`proxy_pass http://clipcascade:8080;` artinya segala koneksi yang mengakses `/` akan diteruskan oleh nginx ke container clipcascade dengan port 8080
+   `proxy_pass http://clipcascade:8080;` artinya segala koneksi yang mengakses `/` akan diteruskan oleh nginx ke container clipcascade dengan port 8080
 
-### 3.5 Validasi konfigurasi dan jalankan container
+4. **Validasi konfigurasi dan jalankan container**
 
-```
-docker compose config
-```
+   ```
+   docker compose config
+   ```
 
-Jika tidak ada error, jalankan container dengan mengetikkan
+   Jika tidak ada error, jalankan container dengan mengetikkan
 
-```
-docker compose up -d
-```
+   ```
+   docker compose up -d
+   ```
 
-Kemudian periksa status keberhasilan
+   Kemudian periksa status keberhasilan
 
-```
-docker compose ps
-```
+      ```bash
+      docker compose ps
+      ```
 
-**_Pastikan container nginx dalam status 'Up'_**
+      **_Pastikan container nginx dalam status 'Up'_**
 
-- Masukkan konfigurasi berikut:
+### 2. Konfigurasi ClipCascade Client
 
-  ```text
-  Username: admin
-  Password: admin123
-  Server URL: http://localhost:8080
-  ```
+#### 2.1 Konfigurasi clipcascade client untuk Windows
 
-- Klik **Login**, jika login berhasil maka akan muncul tampilan konfirmasi sukses:
+1. **Unduh clipcascade client untuk Windows**
 
-  ![Login Success](/images/LoginSuccess.png)
+   Buka halaman GitHub berikut:
+   <https://github.com/Sathvik-Rao/ClipCascade/releases>
 
-#### 2.2 Konfigurasi ClipCascade Client untuk Android
+   Kemudian pilih rilis terbaru lalu unduh ClipCascade.msi
 
-1. **Unduh ClipCascade Client untuk Android**  
-   Buka halaman GitHub Releases berikut:  
-   <https://github.com/Sathvik-Rao/ClipCascade/releases>  
-   Pilih rilis terbaru lalu unduh berkas `ClipCascade.apk`.
+2. **Install clipcascade client**
 
-2. **Install ClipCascade Client**  
-   Setelah `ClipCascade.apk` berhasil diunduh, lakukan instalasi dengan langkah berikut:
-   - Buka berkas `ClipCascade.apk` yang berhasil diunduh.
-   - Ikuti langkah instalasi sampai aplikasi berhasil terpasang.
-   - _\*Jika aplikasi tidak dapat diinstal karena berasal dari sumber yang tidak dikenal, ubah pengaturan perangkat lalu izinkan instal aplikasi dari sumber tersebut (Unknown Sources)._
+   Setelah ClipCascade.msi berhasil diunduh, lakukan instalasi dengan langkah berikut:
 
-3. **Hubungkan Client ke Server**
-   - Buka aplikasi ClipCascade yang sudah diinstal pada Android:
+   * Buka file ClipCascade.msi yang berhasil diunduh, berikut tampilan yang muncul:
+
+     ![Tampilan file ClipCascaade.msi](/images/Clipcascade.msi.png)
+
+   * Klik next hingga muncul menu Select Installation Folder seperti berikut:
+
+      ![Menu Select Installation Folder](/images/SelectInstallationFolder.png)
+
+      Lokasi folder clipcascade dapat disesuaikan dengan menambahkan path yang diinginkan atau klik browse.
+
+   * Klik next, lalu install. Setelah itu proses instalasi akan dimulai.
+
+   * Setelah instalasi selesai, klik finish.
+
+     ![Finish](/images/Finish.png)
+
+3. **Hubungkan client ke server**
+
+   * Buka aplikasi clipcascade yang sudah diinstal, berikut tampilan yang akan muncul:
+
+     ![Konfigurasi ClipCascade](/images/KonfigurasiClipcascade.png)
+
+   * Masukan konfigurasi berikut:
+
+      ```
+      Username: admin
+      Password: admin123
+      Server URL: http://localhost:8080
+      ```
+
+   * Klik Login, jika login berhasil maka akan muncul tampilan berikut:
+
+     ![Login Success](/images/LoginSuccess.png)
+
+#### 2.2 Konfigurasi clipcascade client untuk Android
+
+1. **Unduh clipcascade client untuk Android**
+
+   Buka halaman GitHub berikut:
+   <https://github.com/Sathvik-Rao/ClipCascade/releases>
+
+   Kemudian pilih rilis terbaru lalu unduh ClipCascade.apk
+
+2. **Install clipcascade client**
+
+   Setelah ClipCascade.apk berhasil diunduh, lakukan instalasi dengan langkah berikut:
+
+   * Buka file ClipCascade.apk yang berhasil diunduh
+   * Ikuti langkah instalasi sampai aplikasi berhasil diunduh
+
+   Jika aplikasi tidak dapat di instal karena berasal dari sumber yang tidak dikenal, ubah pengaturan lalu izinkan instal aplikasi dari sumber tersebut.
+
+3. **Hubungkan client ke server**
+
+   * Buka aplikasi clipcascade yang sudah diinstal, berikut tampilan yang akan muncul:
 
      ![ClipCascade Android](/images/ClipCascadeAndroid.jpeg)
 
-   - Masukkan parameter konfigurasi berikut:
+   * Masukan konfigurasi berikut:
 
-     ```text
-     Username: admin
-     Password: admin123
-     Server URL: http://localhost:8080
-     ```
+      ```
+      Username: admin
+      Password: admin123
+      Server URL: http://localhost:8080
+      ```
 
-   - Klik **Login**, jika login berhasil maka akan muncul tampilan status:
+   * Klik Login, jika login berhasil maka akan muncul tampilan berikut:
 
      ![Konfigurasi ClipCascade](/images/LoginSuccessAndroid.jpeg)
 
-   - Klik **Start**, maka client akan terhubung ke server dan sinkronisasi clipboard siap digunakan:
+4. Klik Start, maka client akan terhubung ke server.
 
-     ![Start Android](/images/Start.jpeg)
-
-#### 2.3 Konfigurasi ClipCascade Client untuk Linux (ubuntu/debian based)
-
-1. **Untuk `ClipCascade_Linux.tar.xz`** di https://github.com/Sathvik-Rao/ClipCascade/releases
-
-2. **Ekstrak file tersebut dengan menjalankan perintah berikut ini**
-
-```
-tar -xf ClipCasced_Linux.tar.xz ClipCascade/
-```
-
-Nantinya hasil ekstrak akan diletakkan di folder `ClipCascade`
-
-Kemudian ubah direktori aktif ke direktori `ClipCascade`
-
-```
-cd ClipCascade
-```
-
-**_Jika perintah tar tidak ditemukan, install terlebih dahulu utilitas tersebut_**
-
-```
-sudo apt update && sudo apt install xz-utils tar
-```
-
-3. **Membuat virtual environment python**
-
-```
-python3 -m venv .venv
-```
-
-Aktivasi virtual environment tersebut
-
-```
-source .venv/bin/activate
-```
-
-**Pastikan terdapat tulisan `(.venv)` pada terminal**
-
-Lalu install seluruh library pendukung yang ada pada file `requirements.txt`
-
-```
-pip install -r requirements.txt
-```
-
-Kemudian lanjutkan dengan menginstall library `Tkinter`
-
-```
-sudo apt install python3-tk
-```
-
-4. **Menjalankan program ClipCascade**
-
-Setelah semua kebutuhan sudah diinstall, sekarang jalankan program `main.py`
-
-```
-python3 main.py
-```
-
-Maka sebuah window akan muncul, terlihat seperti berikut ini
-
-![Window ClipCascade pada linux](/images/03.png)
-
-5. **Konfigurasi ClipCascade Client**
-
-Masukkan parameter konfigurasi berikut:
-
-```
-Username: admin
-Password: admin123
-Server URL: http://localhost:8080
-```
-
-Kemudian klik **Login**
+   ![Start Android](/images/Start.jpeg)
 
 # Cara Pemakaian
 
@@ -493,20 +391,20 @@ Kemudian klik **Login**
     ![Konfirmasi log out](/images/Gambar10.jpeg)
 
 11. **Kembali ke halaman login**  
-    Setelah berhasil log out, pengguna diarahkan kembali ke halaman login. Pada contoh tangkapan layar, website menampilkan pemberitahuan bahwa sesi telah berakhir dan meminta pengguna memasukkan username serta password untuk masuk kembali.
+    Setelah berhasil log out, pengguna diarahkan kembali ke halaman login. Pada contoh screenshot, website menampilkan pemberitahuan bahwa sesi telah berakhir dan meminta pengguna memasukkan username serta password untuk masuk kembali.
 
     ![Kembali ke halaman login](/images/Gambar11.jpeg)
 
 #### Pengujian Pemindahan Teks antar perangkat
 
-Pengujian dilakukan menggunakan dua perangkat, yaitu Mac sebagai perangkat pengirim teks yang disalin dan Windows sebagai perangkat penerima. ClipCascade diuji melalui dua cara: pengiriman teks secara manual melalui halaman website dan sinkronisasi clipboard otomatis.
+Pengujian dilakukan menggunakan dua perangkat, yaitu Mac sebagai perangkat pengirim teks yang disalin dan Windows sebagai perangkat penerima. ClipCascade diuji melalui dua metode: pengiriman teks secara manual melalui halaman website dan sinkronisasi clipboard otomatis.
 
 12. **Teks disalin pada perangkat pengirim**  
     Pada metode pertama, pengguna menyalin teks yang ingin dipindahkan dari perangkat Mac. Teks yang disalin ini menjadi data yang akan dikirimkan ke perangkat Windows.
 
     ![Teks disalin pada perangkat pengirim](/images/Gambar12.jpeg)
 
-13. **Cara 1 : Mengirim teks melalui halaman ClipCascade**  
+13. **Metode 1 : Mengirim teks melalui halaman ClipCascade**  
     Teks yang telah disalin dikirim secara manual melalui halaman ClipCascade. Setelah dikirim, data tersebut ditampilkan pada bagian Channel sebagai pesan yang diteruskan ke perangkat penerima.
 
     ![Mengirim teks melalui halaman ClipCascade](/images/Gambar13.jpeg)
@@ -521,15 +419,15 @@ Pengujian dilakukan menggunakan dua perangkat, yaitu Mac sebagai perangkat pengi
 
     ![Menempelkan teks pada perangkat penerima](/images/Gambar15.jpeg)
 
-16. **Cara 2 : Sinkronisasi teks secara otomatis**  
+16. **Metode 2 : Sinkronisasi teks secara otomatis**  
     Pada metode kedua, pengguna cukup menyalin teks pada perangkat pengirim Mac tanpa mengirimkannya secara manual melalui website. Teks yang disalin akan disinkronkan dan muncul pada perangkat lain yang terhubung, sesuai pengaturan ClipCascade.
 
-    ![Sinkronisasi teks secara otomatis](/images/Gambar16.jpeg)
+    ![Sinkronisasi teks secara otomatis](/images/Gambar17.jpeg)
 
 17. **Menempelkan teks tanpa membuka website**  
     Setelah sinkronisasi otomatis berlangsung, perangkat penerima Windows dapat langsung menempelkan teks ke aplikasi tujuan tanpa perlu membuka halaman ClipCascade. Pada pengujian ini, Google Docs digunakan sebagai tempat untuk menempelkan dan memeriksa hasil teks.
 
-    ![Menempelkan teks tanpa membuka website](/images/Gambar17.jpeg)
+    ![Menempelkan teks tanpa membuka website](/images/Gambar16.jpeg)
 
 #### Kesimpulan Pengujian
 
