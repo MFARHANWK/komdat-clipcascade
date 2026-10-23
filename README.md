@@ -364,6 +364,80 @@ docker compose ps
 
      ![Start Android](/images/Start.jpeg)
 
+#### 2.3 Konfigurasi ClipCascade Client untuk Linux (ubuntu/debian based)
+
+1. **Untuk `ClipCascade_Linux.tar.xz`** di https://github.com/Sathvik-Rao/ClipCascade/releases
+
+2. **Ekstrak file tersebut dengan menjalankan perintah berikut ini**
+
+```
+tar -xf ClipCasced_Linux.tar.xz ClipCascade/
+```
+
+Nantinya hasil ekstrak akan diletakkan di folder `ClipCascade`
+
+Kemudian ubah direktori aktif ke direktori `ClipCascade`
+
+```
+cd ClipCascade
+```
+
+**_Jika perintah tar tidak ditemukan, install terlebih dahulu utilitas tersebut_**
+
+```
+sudo apt update && sudo apt install xz-utils tar
+```
+
+3. **Membuat virtual environment python**
+
+```
+python3 -m venv .venv
+```
+
+Aktivasi virtual environment tersebut
+
+```
+source .venv/bin/activate
+```
+
+**Pastikan terdapat tulisan `(.venv)` pada terminal**
+
+Lalu install seluruh library pendukung yang ada pada file `requirements.txt`
+
+```
+pip install -r requirements.txt
+```
+
+Kemudian lanjutkan dengan menginstall library `Tkinter`
+
+```
+sudo apt install python3-tk
+```
+
+4. **Menjalankan program ClipCascade**
+
+Setelah semua kebutuhan sudah diinstall, sekarang jalankan program `main.py`
+
+```
+python3 main.py
+```
+
+Maka sebuah window akan muncul, terlihat seperti berikut ini
+
+![Window ClipCascade pada linux](/images/03.png)
+
+5. **Konfigurasi ClipCascade Client**
+
+Masukkan parameter konfigurasi berikut:
+
+```
+Username: admin
+Password: admin123
+Server URL: http://localhost:8080
+```
+
+Kemudian klik **Login**
+
 # Cara Pemakaian
 
 [`^ kembali ke atas ^`](#)
