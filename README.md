@@ -1,3 +1,5 @@
+<a id="top"></a>
+
 <h1 align="center"><img src="https://github.com/user-attachments/assets/710bb1c3-0eda-48cf-819a-e066bde3a3ec" width="200" alt="ClipCascade"></h1>
 
 | [Sekilas Tentang](#sekilas-tentang) | [Instalasi](#instalasi) | [Konfigurasi](#konfigurasi) | [Cara Pemakaian](#cara-pemakaian) | [Pembahasan](#pembahasan) | [Referensi](#referensi) |
@@ -5,13 +7,13 @@
 
 # Sekilas Tentang
 
-[`^ kembali ke atas ^`](#)
+[`^ kembali ke atas ^`](#top)
 
 ClipCascade adalah open-source utility yang ringa secara otomatis menyinkronkan clipboard berbagai perangkat—tanpa perlu memasukkan data secara manual. Aplikasi ini memastikan proses berbagi yang lancar dengan end-to-end encryption, sehingga memberikan pengalaman penggunaan clipboard yang aman di seluruh workstation.
 
 # Instalasi
 
-[`^ kembali ke atas ^`](#)
+[`^ kembali ke atas ^`](#top)
 
 #### Kebutuhan Sistem :
 
@@ -133,7 +135,7 @@ ClipCascade adalah open-source utility yang ringa secara otomatis menyinkronkan 
 
 # Konfigurasi
 
-[`^ kembali ke atas ^`](#)
+[`^ kembali ke atas ^`](#top)
 
 ### 1. Konfigurasi server
 
@@ -338,7 +340,7 @@ ClipCascade adalah open-source utility yang ringa secara otomatis menyinkronkan 
 
 # Cara Pemakaian
 
-[`^ kembali ke atas ^`](#)
+[`^ kembali ke atas ^`](#top)
 
 1. **Halaman login aplikasi desktop**  
    Pengguna memasukkan username, password, dan URL server ClipCascade yang akan dihubungkan. URL server menunjukkan alamat layanan ClipCascade yang digunakan oleh aplikasi untuk berkomunikasi dan menyinkronkan clipboard.
@@ -435,7 +437,7 @@ Berdasarkan pengujian pada perangkat Mac dan Windows, ClipCascade dapat digunaka
 
 # Pembahasan
 
-[`^ kembali ke atas ^`](#)
+[`^ kembali ke atas ^`](#top)
 
 ### Analisis ClipCascade dan Perbandingannya dengan KDE Connect
 
@@ -470,7 +472,7 @@ Dengan demikian, ClipCascade tidak hanya berfungsi sebagai aplikasi berbagi clip
 
 # Referensi
 
-[`^ kembali ke atas ^`](#)
+[`^ kembali ke atas ^`](#top)
 
 1. [ClipCascade – Clipboard Synchronization Across Devices](https://github.com/Sathvik-Rao/ClipCascade) – GitHub.
 2. [ClipCascade README.md](https://github.com/Sathvik-Rao/ClipCascade/blob/main/README.md) – Dokumentasi instalasi, konfigurasi server, Docker, dan aplikasi klien ClipCascade.
