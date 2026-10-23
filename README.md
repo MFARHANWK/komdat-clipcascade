@@ -160,8 +160,8 @@ Setelah ClipCascade.msi berhasil diunduh, lakukan instalasi dengan langkah berik
 2. Masukan konfigurasi berikut:
 
 ```
-Username: Admin
-Password: Admin123
+Username: admin
+Password: admin123
 Server URL: http://localhost:8080
 ```
 
@@ -190,15 +190,21 @@ Setelah ClipCascade.apk berhasil diunduh, lakukan instalasi dengan langkah berik
 ### 4.2.3 Hubungkan client ke server
 
 1. Buka aplikasi clipcascade yang sudah diinstal, berikut tampilan yang akan muncul:
-   ![]()
+
+   ![ClipCascade Android](/images/ClipCascadeAndroid.jpeg)
+
 2. Masukan konfigurasi berikut:
 
 ```
-Username: Admin
-Password: Admin123
+Username: admin
+Password: admin123
 Server URL: http://localhost:8080
 ```
 
 3. Klik Login, jika login berhasil maka akan muncul tampilan berikut:
-   ![]()
+
+   ![Konfigurasi ClipCascade](/images/LoginSuccessAndroid.jpeg)
+
 4. Klik Start, maka client akan terhubung ke server.
+
+![Start Android](/images/Start.jpeg)
